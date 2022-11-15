@@ -1,1 +1,1 @@
-# renpy_online_courses_simulatorтт
+# renpy_online_courses_simulator

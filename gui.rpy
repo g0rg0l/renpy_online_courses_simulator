@@ -49,7 +49,7 @@ define gui.muted_color = u'#512800'
 define gui.hover_muted_color = u'#7a3d00'
 
 ## Цвета, используемые в тексте диалогов и выборов.
-define gui.text_color = u'#ffffff'
+#define gui.text_color = u'#ffffff'
 define gui.interface_text_color = u'#ffffff'
 
 
@@ -105,8 +105,8 @@ define gui.textbox_yalign = 1.0
 ## Местоположение имени говорящего персонажа по отношению к текстовому окну.
 ## Это могут быть целые значения в пикселях слева и сверху от начала окна или
 ## процентное отношение, например, 0.5 для центрирования.
-define gui.name_xpos = 360
-define gui.name_ypos = 0
+#define gui.name_xpos = 360
+#define gui.name_ypos = 0
 
 ## Горизонтальное выравнивание имени персонажа. Это может быть 0.0 для
 ## левоориентированного, 0.5 для центрированного и 1.0 для правоориентированного
@@ -130,11 +130,11 @@ define gui.namebox_tile = False
 ## Размещение диалога по отношению к текстовому окну. Это могут быть целые
 ## значения в пикселях слева и сверху от текстового окна или процентное
 ## отношение, например, 0.5 для центрирования.
-define gui.dialogue_xpos = 402
-define gui.dialogue_ypos = 75
+#define gui.dialogue_xpos = 402
+#define gui.dialogue_ypos = 75
 
 ## Максимальная ширина текста диалога в пикселях.
-define gui.dialogue_width = 1116
+#define gui.dialogue_width = 1116
 
 ## Горизонтальное выравнивание текста диалога. Это может быть 0.0 для
 ## левоориентированного, 0.5 для центрированного и 1.0 для правоориентированного
@@ -213,7 +213,7 @@ define gui.choice_button_borders = Borders(16, 9, 16, 32)
 define gui.choice_button_text_font = gui.text_font
 define gui.choice_button_text_size = gui.text_size
 define gui.choice_button_text_xalign = 0.5
-define gui.choice_button_text_idle_color = "#cccccc"
+define gui.choice_button_text_idle_color = "#7e7373"
 define gui.choice_button_text_hover_color = "#ffffff"
 define gui.choice_button_text_insensitive_color = "#444444"
 

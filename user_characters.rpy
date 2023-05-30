@@ -44,6 +44,20 @@ init 2:
 
     image side ekaterina_icon = "images/characters/ekaterina/ekaterina_icon.png"
 
+    ######## Доцент ########
+    define docent = Character("Доцент", 
+    image="docent_icon",
+    color="#00008B")
+
+    image side docent_icon = "images/characters/docent/docent_icon.png"
+
+    ######## Профессор ########
+    define professor = Character("Профессор", 
+    image="professor_icon",
+    color="#00008B")
+    
+    image side professor_icon = "images/characters/professor/professor_icon.png"
+
 
 
     ######## Игрок ########

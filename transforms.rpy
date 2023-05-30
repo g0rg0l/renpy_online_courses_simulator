@@ -20,6 +20,15 @@
 
         repeat
 
+    transform arrow_move_45(x, y):
+        xalign x
+        yalign y 
+
+        linear 0.8 xalign x + 0.02 yalign y - 0.02
+        linear 0.8 xalign x yalign y
+
+        repeat
+
 ### Эффект исчезновения ###
 
     transform dslv(x=0.5):

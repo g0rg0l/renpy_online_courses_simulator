@@ -87,7 +87,7 @@ label technical_label_input:
             name = checked_name
 
 
- # ввод ПОЛА и ПИТОМЦА
+# ввод ПОЛА и ПИТОМЦА
 label continue_of_entering:
     call screen input_sex_and_pet with dissolve
 
@@ -106,7 +106,6 @@ label part_1_2:
     navigator "Вам нужно сделать онлайн-курс? Я Ваш цифровой помощник на этом пути."
     navigator "В ходе игры Вы будете выполнять задания, которые помогут закрепить знания по разработке онлайн-курса."
     navigator "Действия игры происходят в разных локациях. Вы можете перемещаться между ними."
-    navigator "Если возникнут сложности, обращайтесь ко мне."
     navigator "Следите за электронной почтой! Не пропустите важные сообщения."
     navigator "Ой,{w=1} кажется Вам уже кто-то написал..."
 
@@ -117,8 +116,8 @@ label part_1_2:
     $ arrow_at_computer = True # стрелки
     $ arrow_at_message_icon = True # стрелки
 
- # Если человек прочитал сюжетное сообщение, то при закрытии компьютера -> выход
- # Во всех остальных случаях - цикличность
+# Если человек прочитал сюжетное сообщение, то при закрытии компьютера -> выход
+# Во всех остальных случаях - цикличность
 label technical_label_1_2_1:
 
     if pet == "cat":
@@ -145,6 +144,7 @@ label technical_label_1_2_1:
             jump technical_label_1_2_1
         elif _return == "mail_checked":
             $ user_need_to_read_mail = False
+            $ arrow_at_close = False
             jump giving_an_order_at_home # Выход
 
 # Первых выход из комнаты
@@ -255,6 +255,7 @@ label department_1_3:
 
 # Пока не уйдём в центр
 label technical_label_1_3:
+    $arrow_at_door_in_department = True
     call screen department
 
     if _return == "exit":
@@ -263,6 +264,7 @@ label technical_label_1_3:
                 navigator "Вас уже ждут в Центре."
                 jump technical_label_1_3
             "Пойти в Центр":
+                $arrow_at_door_in_department = False
                 jump nots_1_4
             "Пойти домой":
                 navigator "Лучше не затягивать с дальнейшей работой. Вас ждут в Центре."
@@ -310,6 +312,7 @@ label nots_1_4:
 
 # пока не уйдём домой
 label technical_label_1_4:
+    $arrow_at_door_in_nots = True
     call screen nots
 
     if _return == "exit":
@@ -321,6 +324,7 @@ label technical_label_1_4:
                 navigator "Заведующий ждёт Вашу программу. Лучше не затягивать."
                 jump technical_label_1_4
             "Пойти домой":
+                $arrow_at_door_in_nots = False
                 jump pre_choosing_photo_1_5
 
 # Пришли домой - запуск знакомства с питомцем. Shake() - в user_variables.rpy
@@ -397,7 +401,7 @@ label technical_label_1_5_2:
                 jump technical_label_1_5_2
     elif _return == "touch_pet":
         $ arrow_at_pet = False
-        call touch_pet
+        call touch_pet from _call_touch_pet
 
     navigator "Ах да{w=1}, фотография."
     $ flag_room_album_opened = True
@@ -437,7 +441,7 @@ label technical_label_1_5_3:
                 jump technical_label_1_5_3
     elif _return == "touch_pet":
         $ flag_technical_label_1_5_3 = False
-        call touch_pet
+        call touch_pet from _call_touch_pet_1
         jump technical_label_1_5_3
     elif _return == "open_album":
         $ arrow_at_album = False
@@ -447,12 +451,69 @@ label technical_label_1_5_3:
 label choosing_photo_1_5:
 
     scene album
-    call screen album with fade
 
-    if pet == "cat":
-        scene home_with_cat with fade
-    elif pet == "dog":
-        scene home_with_dog with fade
+    if sex == "female":
+        if album_photos_selected_1:
+            show wb_photo1F at Position(xpos = 235, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo1F at Position(xpos = 235, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_2:
+            show wb_photo2F at Position(xpos = 597, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo2F at Position(xpos = 597, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_3:
+            show wb_photo3F at Position(xpos = 412, ypos = 561, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo3F at Position(xpos = 412, ypos = 561, xanchor = 0, yanchor = 0)
+            
+        if album_photos_selected_4:
+            show wb_photo4F at Position(xpos = 970, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo4F at Position(xpos = 970, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_5:
+            show wb_photo5F at Position(xpos = 1328, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo5F at Position(xpos = 1328, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_6:
+            show wb_photo6F at Position(xpos = 1048, ypos = 561, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo6F at Position(xpos = 1048, ypos = 561, xanchor = 0, yanchor = 0)
+    else:
+        if album_photos_selected_1:
+            show wb_photo1M at Position(xpos = 235, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo1M at Position(xpos = 235, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_2:
+            show wb_photo2M at Position(xpos = 597, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo2M at Position(xpos = 597, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_3:
+            show wb_photo3M at Position(xpos = 412, ypos = 561, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo3M at Position(xpos = 412, ypos = 561, xanchor = 0, yanchor = 0)
+            
+        if album_photos_selected_4:
+            show wb_photo4M at Position(xpos = 970, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo4M at Position(xpos = 970, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_5:
+            show wb_photo5M at Position(xpos = 1328, ypos = 152, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo5M at Position(xpos = 1328, ypos = 152, xanchor = 0, yanchor = 0)
+
+        if album_photos_selected_6:
+            show wb_photo6M at Position(xpos = 1048, ypos = 561, xanchor = 0, yanchor = 0)
+        else:
+            show default_photo6M at Position(xpos = 1048, ypos = 561, xanchor = 0, yanchor = 0)
+    
+    call screen album
 
     if _return != "correct":
 
@@ -469,6 +530,11 @@ label choosing_photo_1_5:
         jump choosing_photo_1_5
     else: # как только выбрали нужное фото
         navigator "Да, это фотография подходит: светлый фон, размер 1:1, Вас хорошо видно."
+        if pet == "cat":
+            scene home_with_cat with fade
+        elif pet == "dog":
+            scene home_with_dog with fade
+
         navigator "Стоит проверить почту. Возможно, Екатерина прислала необходимые документы."
 
         $ flag_room_album_opened = False # на альбом больше нельзя нажать
@@ -476,6 +542,7 @@ label choosing_photo_1_5:
         $ user_have_new_message = True # пришло письмо
         $ user_need_to_read_mail = True # оно сюжетное
         $ show_file_to_make_programm = True # показать иконку "приложенный файл" в письме
+        $ arrow_at_computer = True # стрелка на пк
 
         jump technical_label_1_6
 
@@ -494,6 +561,7 @@ label technical_label_1_6:
         call screen room
 
     if _return == "open_computer":
+        $ arrow_at_computer = False
         scene desktop_bg
         call screen computer with fade
 
@@ -517,7 +585,7 @@ label technical_label_1_6:
         jump technical_label_1_6
     elif _return == "touch_pet":
         $ flag_technical_label_1_6 = False
-        call touch_pet
+        call touch_pet from _call_touch_pet_2
         jump technical_label_1_6
 
 # мини игра на составление программы
@@ -574,7 +642,7 @@ label technical_label_1_7_1:
         jump technical_label_1_7_1
     elif _return == "touch_pet":
         $ flag_technical_label_1_7_1 = False
-        call touch_pet
+        call touch_pet from _call_touch_pet_3
         jump technical_label_1_7_1
 
 # Пока не пойдём на кафедру
@@ -611,7 +679,7 @@ label technical_label_1_7_2:
                 jump technical_label_1_7_2
     elif _return == "touch_pet":
         $ flag_technical_label_1_7_2 = True
-        call touch_pet
+        call touch_pet from _call_touch_pet_4
         jump technical_label_1_7_2
 
 # разбор полётов по программе с зав. кафедрой
@@ -687,7 +755,7 @@ label checking_created_program_1_7:
             if making_program_three_true == "uncorrect_1":
                 headOfDepartment "Цель курса формулируется кратко и отвечает на вопрос, чему научится студент после прохождения курса."
             elif making_program_three_true == "uncorrect_3":
-                headOfDepartment "Для онлайн-курса не рекоммендуется копировать цель из рабочей программы дисциплины."
+                headOfDepartment "Для онлайн-курса не рекомендуется копировать цель из рабочей программы дисциплины."
                 headOfDepartment "Она должна быть краткой и отвечать на вопрос, как студент сможет использовать полученные знания."
             elif making_program_three_true == "uncorrect_4":
                 headOfDepartment "Цель курса - это не об использовании образовательных технологий."
@@ -704,10 +772,10 @@ label checking_created_program_1_7:
         if making_program_five_true != "correct":
             if making_program_five_true == "uncorrect_1":
                 headOfDepartment "Не всегда язык Вашего онлайн-курса будет русским."
-                headOfDepartment "Например, для студентов-иностранцев рекоммендуется разрабатывать курс на понятном им языке."
+                headOfDepartment "Например, для студентов-иностранцев рекомендуется разрабатывать курс на понятном им языке."
             elif making_program_five_true == "uncorrect_3":
                 headOfDepartment "Выбор языка, на котором будет читаться курс, делает кафедра, ответственная за его реализацию."
-                headOfDepartment "Если он рассчитан на иностранных студентов, то рекоммендуется разрабатывать курс на понятном им языке."
+                headOfDepartment "Если он рассчитан на иностранных студентов, то рекомендуется разрабатывать курс на понятном им языке."
             elif making_program_five_true == "uncorrect_4":
                 headOfDepartment "Язык курса может отличаться от языка реализации образовательной программы."
                 headOfDepartment "Выбор делает кафедра, ответственная за онлайн-курс."
@@ -828,7 +896,7 @@ label technical_label_1_8_1_1:
         jump technical_label_1_8_1_1
     elif _return == "touch_pet":
         $ flag_technical_label_1_8_1_1 = False
-        call touch_pet
+        call touch_pet from _call_touch_pet_5
         jump technical_label_1_8_1_1
 
 # Мини-игра на поиск документов в комнате
@@ -848,7 +916,7 @@ label finding_documents_1_8:
         navigator "Это Ваша новая статья для научного журнала. Берём?"
         menu:
             "Да":
-                navigator "Не рекоммендую. Екатерина её не просила."
+                navigator "Не рекомендую. Екатерина её не просила."
             "Нет":
                 navigator "Всё верно. Пока это не пригодится."
 
@@ -882,11 +950,6 @@ label finding_documents_1_8:
 
     navigator "Отлично! Вы нашли все документы. Фото, программу и список достижений отправляю коллегам в Центр."
     navigator "Давайте здесь немного приберёмся."
-
-    if sex == "male":
-        male_player "Ты прав. Действуй!"
-    else:
-        female_player "Ты прав. Действуй!"
 
     if pet == "cat":
         scene home_with_cat with fade
@@ -942,7 +1005,7 @@ label technical_label_1_8_2:
         jump technical_label_1_8_2
     elif _return == "touch_pet":
         $ flag_technical_label_1_8_2 = False
-        call touch_pet
+        call touch_pet from _call_touch_pet_6
         jump technical_label_1_8_2
 
 # Пока не пойдём в центр
@@ -980,7 +1043,7 @@ label technical_label_1_8_3:
                 jump technical_label_1_8_3
     elif _return == "touch_pet":
         $ flag_technical_label_1_8_3 = True
-        call touch_pet
+        call touch_pet from _call_touch_pet_7
         jump technical_label_1_8_3
 
 # балдёжный разговор с девочкой-вайфу Катенькой
@@ -1438,7 +1501,7 @@ label conclusion_of_the_first_part:
     $ show_todo_icon = True # открывается иконка ту-ду листа в компьютере
     $ arrow_at_todo_icon = True # в первый раз на неё указывает стрелка
 
-# Пока не нажмём на задания в ту-ду листе
+
 label technical_label_2_1:
     if pet == "cat":
         scene home_with_cat
@@ -1453,8 +1516,6 @@ label technical_label_2_1:
         if _return == "close_computer":
             jump technical_label_2_1
         ### выполнение мини-игр ###
-        elif _return == "1":
-            jump first_mini_game_production
         elif _return == "2":
             jump second_mini_game_production
         elif _return == "3":
@@ -1476,31 +1537,1375 @@ label technical_label_2_1:
                 pass
         jump technical_label_2_1
     elif _return == "touch_pet":
-        call touch_pet
+        call touch_pet from _call_touch_pet_8
         jump technical_label_2_1
 
-# Пока они пустые и нас просто возвращает обратно на technical_label_2_1
 
-label first_mini_game_production:
-    ""
-    jump technical_label_2_1
+label technical_label_5_5:
+    if pet == "cat":
+        scene home_with_cat
+    elif pet == "dog":
+        scene home_with_dog
 
-label second_mini_game_production:
-    ""
-    jump technical_label_2_1
+    call screen computer with fade
 
-label third_mini_game_production:
-    ""
-    jump technical_label_2_1
+    if _return == "close_computer":
+        jump technical_label_2_1
+    ### выполнение мини-игр ###
+    elif _return == "2":
+        jump second_mini_game_production
+    elif _return == "3":
+        jump third_mini_game_production
+    elif _return == "4":
+        jump fourth_mini_game_production
+    elif _return == "5":
+        jump fifth_mini_game_production
+    elif _return == "6":
+        jump sixth_mini_game_production
 
-label fourth_mini_game_production:
-    ""
-    jump technical_label_2_1
+
+
+################## 2 #######################
+
+
+label second_mini_game_production:   ####   Мини-игра "Текст" ####
+    scene text_normal with fade
+    navigator "Отлично, [name], что Вы решили проверить свои навыки в работе с текстом."
+    navigator "Писать тексты для онлайн-курса нужно в информационном стиле."
+    navigator "Вырезайте из текста только лишние слова и фразы. Сокращайте путь читателя к основной мысли."
+    navigator "Сейчас проверим текст на читаемость. Вам нужно найти 12 стоп-слов и словосочетаний."
+    navigator "Однако будьте внимательны, у Вас всего 2 попытки. Удачи!"
+    jump mini_game_text
+
+label mini_game_text:
+    call screen text_mini_game
+    if _return == "" or _return == "T":
+        jump mini_game_text
+    if _return == "proverka":
+        if right_choise == 12:
+            navigator "Это победа! Вы профи. Спасибо за игру!"
+            $game_vin = True
+            jump text_mini_game_final
+        if popitki < 3: 
+            navigator "Вы нашли [right_choise] из 12 стоп-слов. Попробуйте еще раз."
+            jump mini_game_text
+        elif right_choise == 0:
+            navigator "[right_choise] из 12 стоп-слов. Все ошибаются :)). Нестрашно."
+            jump text_mini_game_final
+        elif right_choise == 1:
+            navigator "[right_choise] из 12 стоп-слов. Не падайте духом!."
+            jump text_mini_game_final
+        elif right_choise == 2:
+            navigator "[right_choise] из 12 стоп-слов. Верьте в себя и свои силы!"
+            jump text_mini_game_final
+        elif right_choise == 3:
+            navigator "[right_choise] из 12 стоп-слов. Дорога к успеху трудна. Но Вы справитесь!"
+            jump text_mini_game_final
+        elif right_choise == 4:
+            navigator "[right_choise] из 12 стоп-слов. Вам надо тренироваться!"
+            jump text_mini_game_final
+        elif right_choise == 5:
+            navigator "[right_choise] из 12 стоп-слов. Это было красиво :) Вы молодец!"
+            jump text_mini_game_final
+        elif right_choise == 6:
+            navigator "[right_choise] из 12 стоп-слов. Вы очень хорошо постарались!"
+            jump text_mini_game_final
+        elif right_choise == 7:
+            navigator "[right_choise] из 12 стоп-слов. Поразительно! Вы нашли больше половины стоп-слов."
+            jump text_mini_game_final
+        elif right_choise == 8:
+            navigator "[right_choise] из 12 стоп-слов. Вы лучше всех! Жаль, что не всё нашлось."
+            jump text_mini_game_final
+        elif right_choise == 9:
+            navigator "[right_choise] из 12 стоп-слов. Мы здорово проводим время вместе :) Вы не нашли всего 3  стоп-слова."
+            jump text_mini_game_final
+        elif right_choise == 10:
+            navigator "[right_choise] из 12 стоп-слов. Ваши знания восхищают! Вы не нашли всего 2 стоп-слова."
+            jump text_mini_game_final
+        elif right_choise == 11:
+            navigator "[right_choise] из 12 стоп-слов. Почти в яблочко! Вы были в шаге от победы."
+            jump text_mini_game_final
+
+label text_mini_game_final:
+    $lst2[2] = True
+    $lst2[7] = True
+    $lst2[11] = True
+    $lst2[35] = True
+    $lst2[50] = True
+    $lst2[56] = True
+    $lst2[59] = True
+    $lst2[67] = True
+    $lst2[81] = True
+    $lst2[86] = True
+    $lst2[99] = True
+    $lst2[104] = True
+
+    $game_over = True
+    if game_finish:
+        call screen text_mini_game
+        if (_return == "exit"):
+            jump technical_label_5_5
+        else:
+            jump text_mini_game_final    
+    else:
+        if game_vin == False:
+            navigator "Взгляните сначала на правильные варианты ответов и, чтобы закрыть игру, нажмите на крестик в правом верхнем углу."
+        else:
+            navigator "Чтобы закрыть игру нажмите на крестик в правом верхнем углу."
+        $game_finish = True
+        $todo_two_colmpleted = True
+        jump text_mini_game_final
+
+
+
+################## 3 #######################
+
+
+label third_mini_game_production: #### Мини-игра "Авторское право" ####
+    jump copyright_law_start
+
+label copyright_law_start:
+    scene copyright_law with fade
+
+    navigator "У каждого текста и иллюстрации есть автор. Его творчество охраняется авторскими правами."
+    navigator "Это цифровые лицензии. По комбинации значков и аббревиатур сразу понятно, как можно использовать произведение."
+    navigator "Все эти лицензии неисключительные, бессрочные, действуют для всех, везде и применяются ко всем одинаково."
+    navigator "Давайте проверим как Вы разбираетесь в лицензиях."
+    navigator "Перед Вами картинки. Подберите каждой картике разрешенное условие ее использования."
+    navigator "Будьте внимательны. У вас есть по 3 попытки на каждом уровне. Удачи!"
+    
+    jump copyright_law_game
+
+label copyright_law_game: #авторское право
+    if(first_game_copyright):
+        $ first_game_copyright = False
+        call screen copyright_law with dissolve
+        if copyright_progress == 1:
+            scene copyright_law
+            show text1_image at Position(xpos = 680, ypos =  700, xanchor = 0, yanchor = 0)
+            show text2_image at Position(xpos = 1302, ypos = 700, xanchor = 0, yanchor = 0)
+            show text3_image at Position(xpos = 58, ypos = 700, xanchor = 0, yanchor = 0)
+        else:
+            scene copyright_law2
+            show text4_image at Position(xpos = 1305, ypos =  700, xanchor = 0, yanchor = 0)
+            show text5_image at Position(xpos = 60, ypos = 700, xanchor = 0, yanchor = 0)
+            show text6_image at Position(xpos = 683, ypos = 700, xanchor = 0, yanchor = 0)
+    else:
+        #проверка полей на заполненность
+        python:
+            for check_full_ans in range(1, 4): #перебираем все поля ответов
+                check_full = False
+                for check_full_txt in range(1, 4): #перебираем все текстовые таблички
+                    if text_position[check_full_txt][0] == answer_position[check_full_ans][0] and text_position[check_full_txt][1] == answer_position[check_full_ans][1]:
+                        check_full = True
+                answer_full[check_full_ans] = check_full
+        call screen copyright_law
+
+    if (isinstance(_return, str)): #проверка строковых вариантов
+
+        if _return == "text_reset1" or _return == "text_reset2" or _return == "text_reset3": #проверка вариантов с перетаскиванием "в никуда"
+            $ char_return = [char for char in _return]
+            $ text_position[int(char_return[10])][0] = 0
+            $ text_position[int(char_return[10])][1] = 0
+
+        elif _return == "next_level":
+            if(answer_correct[1] and answer_correct[2] and answer_correct[3]):
+                $ count_of_mistakes = 0
+                if copyright_progress == 1:
+                    navigator "Замечательно! Так держать!"
+                    python:
+                        for a in range(1, 4):
+                            text_position[a][0] = 0
+                            text_position[a][1] = 0
+                            answer_full[a] = False
+                            answer_correct[a] = False
+                        default_position = [0, 1305, 60, 683]
+                        answer_position = [[0, 0], [60, 506], [683, 507], [1305, 507]]
+                        copyright_progress += 1
+                        first_game_copyright = True 
+                else:
+                    scene copyright_law_answers2
+                    navigator "В яблочко! Всё правильно."
+                    navigator "Итак, основные виды лицензий мы повторили. Можно двигаться дальше."
+                    $todo_three_colmpleted = True
+                    call screen copyright_final
+                    if _return == "exit":
+                        jump technical_label_5_5
+            else:
+                if(count_of_mistakes == 0):
+                    $ count_of_mistakes += 1
+                    navigator "Немного не так. Попробуйте ещё раз!"
+                elif(count_of_mistakes == 1):
+                    $ count_of_mistakes += 1
+                    navigator "Не совсем так. Подумайте!"
+                else:
+                    if(copyright_progress == 1):
+                        navigator "Не расстраивайтесь, бывает. Давайте узнаем правильные ответы."
+                        scene copyright_law_answers1 with dissolve
+                        navigator "При лицензии CC BY можем распространять, редактировать, брать за основу, использовать."
+                        navigator "При лицензии CC BY-SA можем редактировать, но распространять будем на условиях этой же лицензии."
+                        navigator "При лицензии CC BY-NC можем распространять, но только в исходном виде. Редактирование запрещено."
+                        python:
+                            for a in range(1, 4):
+                                text_position[a][0] = 0
+                                text_position[a][1] = 0
+                                answer_full[a] = False
+                                answer_correct[a] = False
+                            default_position = [0, 1305, 60, 683]
+                            answer_position = [[0, 0], [60, 506], [683, 507], [1305, 507]]
+                            copyright_progress += 1
+                            count_of_mistakes = 0
+                            first_game_copyright = True 
+                    else:
+                        navigator "В следующий раз повезёт! А вот и правильные ответы."
+                        scene copyright_law_answers2 with dissolve
+                        navigator "При лицензии CC BY-NC можем редактировать, но распространять будем только в некоммерческих целях."
+                        navigator "При лицензии CC BY-NC-ND не можем без согласия автора редактировать и распространять в коммерческих целях."
+                        navigator "При лицензии CC BY 0 можем свободно использовать без ограничений, не спрашивая разрешения у автора."
+                        scene copyright_law_answers2 with dissolve
+                        navigator "Итак, основные виды лицензий мы повторили. Можно двигаться дальше."
+                        $todo_three_colmpleted = True
+                        call screen copyright_final
+                        if _return == "exit":
+                            jump technical_label_5_5
+                    
+                python:
+                    for a in range(1, 4):
+                        text_position[a][0] = 0
+                        text_position[a][1] = 0
+                jump copyright_law_game
+        elif _return == "open_help":
+            jump copyright_help_page
+
+    else: #проверка ответов в полях
+        $ answer_num = _return[0]
+        $ text_num = _return[1]
+        $ answer_full[answer_num] = True
+        $ text_position[text_num][0] = answer_position[answer_num][0]
+        $ text_position[text_num][1] = answer_position[answer_num][1]
+        if answer_num == text_num:
+            $ answer_correct[answer_num] = True
+        else:
+            $ answer_correct[answer_num] = False
+
+    jump copyright_law_game
+
+
+label copyright_help_page:
+    call screen copyright_help_page
+
+    if _return == "return_to_game":
+        python:
+            for a in range(1, 4):
+                text_position[a][0] = 0
+                text_position[a][1] = 0
+        jump copyright_law_game
+
+
+
+################## 4 #######################
+
+
+
+label fourth_mini_game_production:  ####   Мини-игра "Презентации" ####
+    jump presentation1
+
+label presentation1:
+    if flag_presentation1 == False:
+        scene 1_wrong with Fade(0.3, 0.0, 0.3)
+        navigator "Ой, ошибки на слайдах, найдите их."
+        navigator "Постарайтесь не ошибаться. У вас есть по 2 попытки на каждый слайд."
+    else:
+        scene 1_wrong
+    call screen first_presentation
+    if (k == 2):
+        scene 1_right with dissolve
+        navigator "Здесь была ошибка выравнивания. Не забывайте выровнять элементы по левому краю."
+    elif (_return == "exit"):
+        $flag_presentation1 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation1
+    elif (_return == "viravnivanie"):
+        scene 1_right with dissolve
+        navigator "Верно!  Обязательно выравнивайте элементы по левому краю."
+    else:
+        if sex == "male":
+            navigator "Вы внимательный! Но есть более серьезная ошибка. Поищите еще!"
+        else:
+            navigator "Вы внимательная! Но есть более серьезная ошибка. Поищите еще!"
+        $flag_presentation1 = True
+        jump presentation1
+    $k = 0
+    jump presentation2
+
+label presentation2:
+    if flag_presentation2 == False:
+        scene 2_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 2_wrong
+
+    call screen second_presentation
+    if (k == 2):
+        show 2_right with dissolve
+        navigator "Градиент не используйте. Без него гораздо лучше."
+    elif (_return == "exit"):
+        $flag_presentation2 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation2
+    elif (_return == "gradient"):
+        show 2_right with dissolve
+        navigator "Вы правы!"
+    else:
+        navigator "Ошибка на поверхности! Давайте еще разок!"
+        $flag_presentation2 = True
+        jump presentation2
+    $k = 0
+    jump presentation3
+
+label presentation3:
+    if flag_presentation3 == False:
+        scene 3_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 3_wrong
+
+    call screen third_presentation
+    if (k == 2):
+        show 3_right with dissolve
+        navigator "Это была ошибка \"Количество текта\". Нужно с ней бороться всегда и везде!"
+    elif (_return == "exit"):
+        $flag_presentation3 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation3
+    elif (_return == "kolichestvo_texta"):
+        show 3_right with dissolve
+        navigator "Конечно! Стену текста нужно убрать"
+    else:
+        navigator "Попробуйте другой вариант."
+        $flag_presentation3 = True
+        jump presentation3
+    $k = 0
+    jump presentation4
+
+label presentation4:
+    if flag_presentation4 == False:
+        scene 4_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 4_wrong
+
+    call screen fouth_presentation
+    if (k == 2):
+        show 4_right with dissolve
+        navigator "Здесь много лишних рисунков без связи с текстом и висячий предлог."
+    elif (_return == "exit"):
+        $flag_presentation4 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation4
+    elif (_return == "lishnie_elementi"):
+        show 4_right with dissolve
+        navigator "Отлично! Ключевая ошибка найдена!"
+    else:
+        navigator "Неудачный выбор! Давайте по новой."
+        $flag_presentation4 = True
+        jump presentation4
+    $k = 0
+    jump presentation5
+
+label presentation5:
+    if flag_presentation5 == False:
+        scene 5_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 5_wrong
+
+    call screen fifth_presentation
+    if (k == 2):
+        show 5_right with dissolve
+        navigator "На слайде нарушена иерархия. Акцент сделан на вводную фразу, а не на основной текст."
+    elif (_return == "exit"):
+        $flag_presentation5 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation5
+    elif (_return == "narushenie_ierarhii"):
+        show 5_right with dissolve
+        navigator "Замечательно! Вы молодец!"
+    else:
+        navigator "Это сложная ошибка. Подумайте!"
+        $flag_presentation5 = True
+        jump presentation5
+    $k = 0
+    jump presentation6
+
+label presentation6:
+    if flag_presentation6 == False:
+        scene 6_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 6_wrong
+
+    call screen six_presentation
+    if (k == 2):
+        scene 6_right with dissolve
+        navigator "Неправильно оформлена выноска с репликой персонажа."
+    elif (_return == "exit"):
+        $flag_presentation6 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation6
+    elif (_return == "oformlenie_vinosok"):
+        scene 6_right with dissolve
+        navigator "Согласен с Вами, оранжевая выноска - неудачное решение."
+    else:
+        navigator "Здесь всё очевидно! Не торопитесь!"
+        $flag_presentation6 = True
+        jump presentation6
+    $k = 0
+    jump presentation7
+
+label presentation7:
+    if flag_presentation7 == False:
+        scene 7_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 7_wrong
+
+    call screen seven_presentation
+    if (k == 2):
+        scene 7_right with dissolve
+        navigator "Здесь была ошибка в оформлении текста. Теперь весь текст хорошо читается."
+    elif (_return == "exit"):
+        $flag_presentation7 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation7
+    elif (_return == "oformlenie_texta"):
+        scene 7_right with dissolve
+        navigator "Правильно! Текст должно быть хорошо видно."
+    else:
+        navigator "Не то. Попробуйте еще раз!"
+        $flag_presentation7 = True
+        jump presentation7
+    $k = 0
+    jump presentation8
+
+label presentation8:
+    if flag_presentation8 == False:
+        scene 8_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 8_wrong
+
+    call screen eight_presentation
+    if (k == 2):
+        scene 8_right with dissolve
+        navigator "Здесь было нарушено правило приближения. Не забывайте про \"воздух\" на слайдах!"
+    elif (_return == "exit"):
+        $flag_presentation8 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation8
+    elif (_return == "pravilo_priblizhenia"):
+        scene 8_right with dissolve
+        navigator "Да, Вы правы! Между элементами должен быть \"воздух\"."
+    else:
+        navigator "Вы уже близко к разгадке. Не останавливайтесь!"
+        $flag_presentation8 = True
+        jump presentation8
+    $k = 0
+    jump presentation9
+
+label presentation9:
+    if flag_presentation9 == False:
+        scene 9_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 9_wrong
+
+    call screen nine_presentation
+    if (k == 2):
+        scene 9_right with dissolve
+        navigator "Видите как изменился текст в плашках? Он поместился целиком."
+    elif (_return == "exit"):
+        $flag_presentation9 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation9
+    elif (_return == "oformlenie_plashek"):
+        scene 9_right with dissolve
+        navigator "Точно! Текст должен помещаться в плашки целиком."
+    else:
+        navigator "Тут другая ошибка. Посмотрите внимательно!"
+        $flag_presentation9 = True
+        jump presentation9
+    $k = 0
+    jump presentation10
+
+label presentation10:
+    if flag_presentation10 == False:
+        scene 10_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 10_wrong
+
+    call screen ten_presentation
+    if (k == 2):
+        scene 10_right with dissolve
+        navigator "Тут разная стилистика элементов. Это плохо смотрится на видео."
+    elif (_return == "exit"):
+        $flag_presentation10 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation10
+    elif (_return == "raznaya_stilistika"):
+        scene 10_right with dissolve
+        navigator "Абсолютно верно! Иконки разного стиля"
+    else:
+        navigator "Это непросто, приглядитесь повнимательнее!"
+        $flag_presentation10 = True
+        jump presentation10
+    $k = 0
+    jump presentation11
+
+label presentation11:
+    if flag_presentation11 == False:
+        scene 11_wrong with Fade(0.3, 0.0, 0.3)
+    else:
+        scene 11_wrong
+
+    call screen eleven_presentation
+    if (k == 2):
+        scene 11_right with dissolve
+        navigator "Копирование из Интернета может нарушить чужие авторские права."
+    elif (_return == "exit"):
+        $flag_presentation11 = True
+        navigator "Вы не закончили. Осталось еще немного."
+        jump presentation11
+    elif (_return == "3D_effects"):
+        scene 11_right with dissolve
+        navigator "Да, копировать из Интернета схемы и рисунки нельзя."
+    else:
+        navigator "Нет, тут дело в другом."
+        $flag_presentation11 = True
+        jump presentation11 
+    navigator "Спасибо [name]! Вы справились, теперь в презентациях нет ошибок."
+    navigator "Чтобы выйти, нажмите на крестик в правом верхнем углу."
+    jump final_presentations
+
+label final_presentations:
+    $todo_four_colmpleted = True
+    scene 11_right
+    call screen final_for_presentations
+    if (_return == "exit"):
+        jump technical_label_5_5
+    else:
+        jump final_presentations
+
+
+
+################## 5 #######################
+
+
+#### мини-игра гардероб ####
+
 
 label fifth_mini_game_production:
-    ""
-    jump technical_label_2_1
+
+    $flag_room_cupboard_opened = True
+    $arrow_at_cupboard = True
+
+    if flag_fifth_mini_game == False:
+        navigator "Пришло время подобрать одежду для съемок. Кажется, она находится в шкафу."
+
+    call screen room
+    if _return != "open_cupboard":
+        navigator "Нажмите на шкаф чтобы продолжить игру."
+        $flag_fifth_mini_game = True
+        jump fifth_mini_game_production
+    else:
+        scene wardrobe_bg with fade
+        navigator "Чтобы перетащить элемент одежды, нажмите по нему мышкой и удерживайте."
+        if sex == "female":
+            jump wardrobe_game_f
+        else:
+            jump wardrobe_game_m
+
+
+label wardrobe_game_f:
+    
+    scene wardrobe_bg
+
+    show bottom1f at Position(xpos = bottom_position_f[1][0], ypos = bottom_position_f[1][1], xanchor = 0, yanchor = 0)
+    show bottom2f at Position(xpos = bottom_position_f[2][0], ypos = bottom_position_f[2][1], xanchor = 0, yanchor = 0)
+    show bottom3f at Position(xpos = bottom_position_f[3][0], ypos = bottom_position_f[3][1], xanchor = 0, yanchor = 0)
+    show bottom4f at Position(xpos = bottom_position_f[4][0], ypos = bottom_position_f[4][1], xanchor = 0, yanchor = 0)
+    show bottom5f at Position(xpos = bottom_position_f[5][0], ypos = bottom_position_f[5][1], xanchor = 0, yanchor = 0)
+
+    show top1f at Position(xpos = top_position_f[1][0], ypos = top_position_f[1][1], xanchor = 0, yanchor = 0)
+    show top2f at Position(xpos = top_position_f[2][0], ypos = top_position_f[2][1], xanchor = 0, yanchor = 0)
+    show top3f at Position(xpos = top_position_f[3][0], ypos = top_position_f[3][1], xanchor = 0, yanchor = 0)
+    show top4f at Position(xpos = top_position_f[4][0], ypos = top_position_f[4][1], xanchor = 0, yanchor = 0)
+    show top5f at Position(xpos = top_position_f[5][0], ypos = top_position_f[5][1], xanchor = 0, yanchor = 0)
+    show top6f at Position(xpos = top_position_f[6][0], ypos = top_position_f[6][1], xanchor = 0, yanchor = 0)
+
+    show boots4f at Position(xpos = boots_position_f[4][0], ypos = boots_position_f[4][1], xanchor = 0, yanchor = 0)
+    show boots3f at Position(xpos = boots_position_f[3][0], ypos = boots_position_f[3][1], xanchor = 0, yanchor = 0)
+    show boots2f at Position(xpos = boots_position_f[2][0], ypos = boots_position_f[2][1], xanchor = 0, yanchor = 0)
+    show boots1f at Position(xpos = boots_position_f[1][0], ypos = boots_position_f[1][1], xanchor = 0, yanchor = 0)
+
+    if first_game_wardrobe:
+        call screen WardrobeScreenF with dissolve
+        $ first_game_wardrobe = False
+    else:
+        call screen WardrobeScreenF
+    
+    python:
+
+        correct_answer = False
+        char_return = [char for char in _return]
+        return_len = int(len(char_return))
+        num1 = int(char_return[0])
+        num2 = int(char_return[return_len-1])
+
+        if num1 == 1: #верх
+            if num2 == 2: #платье
+                correct_answer = True
+                update_garment_image(num1, num2)
+                clear_garments(1)
+                clear_garments(2)
+            elif num2 == 3: #блуза
+                correct_answer = True
+                update_garment_image(num1, num2)
+                clear_garments(1)
+                clear_garments(4)
+            if correct_answer: #если верно
+                top_position_f[num2][0] = model_top_position_f[num2][0]
+                top_position_f[num2][1] = model_top_position_f[num2][1]
+                top_ready[num2] = True
+            
+        elif num1 == 2: #низ
+            if num2 == 2 or num2 == 4: #коричневая юбка или серая юбка
+                correct_answer = True
+                update_garment_image(num1, num2)
+                clear_garments(2)
+                clear_garments(4)
+                bottom_position_f[num2][0] = model_bottom_position_f[num2][0]
+                bottom_position_f[num2][1] = model_bottom_position_f[num2][1]
+                bottom_ready[num2] = True
+
+        elif num1 == 3: #обувь
+            if num2 == 2 or num2 == 3: #туфли или кроссовки
+                correct_answer = True
+                update_garment_image(num1, num2)
+                clear_garments(3)
+                boots_position_f[num2][0] = model_boots_position_f[num2][0]
+                boots_position_f[num2][1] = model_boots_position_f[num2][1]
+                boots_ready[num2] = True
+        
+        navigator(navigator_str_f[_return]) 
+        if not correct_answer:
+            clear_garments(num1)      
+    
+    $ check1 = top_ready[2] and boots_ready[2]
+    $ check2 = top_ready[2] and boots_ready[3]
+    $ check3 = top_ready[3] and bottom_ready[2] and boots_ready[2]
+    $ check4 = top_ready[3] and bottom_ready[2] and boots_ready[3]
+    $ check5 = top_ready[3] and bottom_ready[4] and boots_ready[2]
+    $ check6 = top_ready[3] and bottom_ready[4] and boots_ready[3]
+
+    if check1 or check2 or check3 or check4 or check5 or check6:
+        navigator "С одеждой решили. Теперь прическа, аксессуары и макияж. Вперед, к зеркалу!"
+        jump mirror_game_f
+    
+    jump wardrobe_game_f
+
+
+label wardrobe_game_m:
+    
+    scene wardrobe_bg
+
+    show boots4m at Position(xpos = boots_position_m[4][0], ypos = boots_position_m[4][1], xanchor = 0, yanchor = 0)
+    show boots3m at Position(xpos = boots_position_m[3][0], ypos = boots_position_m[3][1], xanchor = 0, yanchor = 0)
+    show boots2m at Position(xpos = boots_position_m[2][0], ypos = boots_position_m[2][1], xanchor = 0, yanchor = 0)
+    show boots1m at Position(xpos = boots_position_m[1][0], ypos = boots_position_m[1][1], xanchor = 0, yanchor = 0)
+
+    show bottom1m at Position(xpos = bottom_position_m[1][0], ypos = bottom_position_m[1][1], xanchor = 0, yanchor = 0)
+    show bottom2m at Position(xpos = bottom_position_m[2][0], ypos = bottom_position_m[2][1], xanchor = 0, yanchor = 0)
+    show bottom3m at Position(xpos = bottom_position_m[3][0], ypos = bottom_position_m[3][1], xanchor = 0, yanchor = 0)
+    show bottom4m at Position(xpos = bottom_position_m[4][0], ypos = bottom_position_m[4][1], xanchor = 0, yanchor = 0)
+
+    show top1m at Position(xpos = top_position_m[1][0], ypos = top_position_m[1][1], xanchor = 0, yanchor = 0)
+    show top2m at Position(xpos = top_position_m[2][0], ypos = top_position_m[2][1], xanchor = 0, yanchor = 0)
+    show top3m at Position(xpos = top_position_m[3][0], ypos = top_position_m[3][1], xanchor = 0, yanchor = 0)
+    show top4m at Position(xpos = top_position_m[4][0], ypos = top_position_m[4][1], xanchor = 0, yanchor = 0)
+    show top5m at Position(xpos = top_position_m[5][0], ypos = top_position_m[5][1], xanchor = 0, yanchor = 0)
+
+    if first_game_wardrobe:
+        call screen WardrobeScreenM with dissolve
+        $ first_game_wardrobe = False
+    else:
+        call screen WardrobeScreenM
+    
+    python:
+
+        correct_answer = False
+        char_return = [char for char in _return]
+        return_len = int(len(char_return))
+        num1 = int(char_return[0])
+        num2 = int(char_return[return_len-1])
+
+        if num1 == 1: #верх
+            if num2 == 3 or num2 == 4:
+                correct_answer = True
+                update_garment_image_m(num1, num2)
+                clear_garments_m(1)
+                top_position_m[num2][0] = model_top_position_m[num2][0]
+                top_position_m[num2][1] = model_top_position_m[num2][1]
+                top_ready[num2] = True
+
+        elif num1 == 2: #низ
+            if num2 == 1 or num2 == 2:
+                correct_answer = True
+                update_garment_image_m(num1, num2)
+                clear_garments_m(2)
+                bottom_position_m[num2][0] = model_bottom_position_m[num2][0]
+                bottom_position_m[num2][1] = model_bottom_position_m[num2][1]
+                bottom_ready[num2] = True
+        
+        elif num1 == 3: #обувь
+            if num2 == 1 or num2 == 2:
+                correct_answer = True
+                update_garment_image_m(num1, num2)
+                clear_garments_m(3)
+                boots_position_m[num2][0] = model_boots_position_m[num2][0]
+                boots_position_m[num2][1] = model_boots_position_m[num2][1]
+                boots_ready[num2] = True
+
+        navigator(navigator_str_m[_return])
+        if not correct_answer:
+            clear_garments_m(num1)  
+
+    $ check1 = top_ready[3] and bottom_ready[1] and boots_ready[1]
+    $ check2 = top_ready[3] and bottom_ready[1] and boots_ready[2]
+    $ check3 = top_ready[3] and bottom_ready[2] and boots_ready[1]
+    $ check4 = top_ready[3] and bottom_ready[2] and boots_ready[2]
+    $ check5 = top_ready[4] and bottom_ready[1] and boots_ready[1]
+    $ check6 = top_ready[4] and bottom_ready[1] and boots_ready[2]
+    $ check7 = top_ready[4] and bottom_ready[2] and boots_ready[1]
+    $ check8 = top_ready[4] and bottom_ready[2] and boots_ready[2]
+
+    if check1 or check2 or check3 or check4 or check5 or check6 or check7 or check8:
+        navigator "С одеждой решили. Теперь прическа, аксессуары и макияж. Да, мужчинам нужен макияж. Вперед, к зеркалу!"
+        jump mirror_game_m        
+
+    jump wardrobe_game_m
+
+
+label mirror_game_f:
+    if first_game_mirror:
+        scene mirror_bg_f with fade
+    else:
+        scene mirror_bg_f
+    
+    show character_bg_f at Position(xpos = 750, ypos = 221, xanchor = 0, yanchor = 0)
+    # отображаем прически. Если прическа выбрана, соответствующий рисунок выбора не отображается
+    show haircut1f at Position(xpos = main_haircut_position_f[1][0], ypos = main_haircut_position_f[1][1], xanchor = 0, yanchor = 0)
+    show haircut2f at Position(xpos = main_haircut_position_f[2][0], ypos = main_haircut_position_f[2][1], xanchor = 0, yanchor = 0)
+    if not haircut_ready[3]:
+        show haircut3f at Position(xpos = main_haircut_position_f[3][0], ypos = main_haircut_position_f[3][1], xanchor = 0, yanchor = 0)
+    if not haircut_ready[4]:
+        show haircut4f at Position(xpos = main_haircut_position_f[4][0], ypos = main_haircut_position_f[4][1], xanchor = 0, yanchor = 0)
+    # отображаем украшения и косметику
+    show add1f at Position(xpos = add_position_f[1][0], ypos = add_position_f[1][1], xanchor = 0, yanchor = 0)
+    show add2f at Position(xpos = add_position_f[2][0], ypos = add_position_f[2][1], xanchor = 0, yanchor = 0)
+    show add3f at Position(xpos = add_position_f[3][0], ypos = add_position_f[3][1], xanchor = 0, yanchor = 0)
+    show add4f at Position(xpos = add_position_f[4][0], ypos = add_position_f[4][1], xanchor = 0, yanchor = 0)
+    show add5f at Position(xpos = add_position_f[5][0], ypos = add_position_f[5][1], xanchor = 0, yanchor = 0)
+    show add6f at Position(xpos = add_position_f[6][0], ypos = add_position_f[6][1], xanchor = 0, yanchor = 0)
+    show add7f at Position(xpos = add_position_f[7][0], ypos = add_position_f[7][1], xanchor = 0, yanchor = 0)
+    # отображаем неактивную косметику (уже использована)
+    if add_ready[5]:
+        show add5_inactive_f at Position(xpos = main_add_position_f[5][0], ypos = main_add_position_f[5][1], xanchor = 0, yanchor = 0)
+    if add_ready[6]:
+        show add6_inactive_f at Position(xpos = main_add_position_f[6][0], ypos = main_add_position_f[6][1], xanchor = 0, yanchor = 0)
+    if add_ready[7]:
+        show add7_inactive_f at Position(xpos = main_add_position_f[7][0], ypos = main_add_position_f[7][1], xanchor = 0, yanchor = 0)
+
+
+    if first_game_mirror:
+        navigator "Так же как и в предыдущей части, вам необходимо поочереди перетаскивать элементы. А я буду помогать."
+        call screen MirrorScreenF
+        $ first_game_mirror = False
+    else:
+        call screen MirrorScreenF
+
+    python:
+        char_return = [char for char in _return]
+        num1 = len(char_return)
+        num2 = int(char_return[num1-1])
+
+        if num1 == 8: #haircut
+            if num2 == 3 or num2 == 4:
+                for a in range(1, 5):
+                    haircut_ready[a] = False
+                haircut_ready[num2] = True
+                update_mirror_image_f(1, num2)
+        if num1 == 4: #add
+            if num2 != 2 and num2 != 4:
+                add_position_f[num2][0] = add_model_position_f[num2][0]
+                add_position_f[num2][1] = add_model_position_f[num2][1] 
+                add_ready[num2] = True
+                update_mirror_image_f(2, num2)
+        
+        navigator(navigator_mirror_str_f[_return])
+        check = (haircut_ready[3] or haircut_ready[4]) and add_ready[1] and add_ready[3] and add_ready[5] and add_ready[6] and add_ready[7]
+    
+    if check:
+        navigator "Поздравляю! Вы готовы к съёмкам. Вас ждут в студии!"
+        $arrow_at_cupboard = False
+        $todo_five_colmpleted = True
+        jump technical_label_5_5
+
+    jump mirror_game_f
+
+
+label mirror_game_m:
+
+    if first_game_mirror:
+        scene mirror_bg_m with fade
+    else:
+        scene mirror_bg_m
+    
+    show character_bg_m at Position(xpos = 725, ypos = 185, xanchor = 0, yanchor = 0)
+    # отображаем прически. Если прическа выбрана, соответствующий рисунок выбора не отображается
+    show haircut2m at Position(xpos = main_haircut_position_m[2][0], ypos = main_haircut_position_m[2][1], xanchor = 0, yanchor = 0)
+    show haircut4m at Position(xpos = main_haircut_position_m[4][0], ypos = main_haircut_position_m[4][1], xanchor = 0, yanchor = 0)
+    if not haircut_ready[1]:
+        show haircut1m at Position(xpos = main_haircut_position_m[1][0], ypos = main_haircut_position_m[1][1], xanchor = 0, yanchor = 0)
+    if not haircut_ready[3]:
+        show haircut3m at Position(xpos = main_haircut_position_m[3][0], ypos = main_haircut_position_m[3][1], xanchor = 0, yanchor = 0)
+    
+    # отображаем украшения и косметику
+    show add1m at Position(xpos = add_position_m[1][0], ypos = add_position_m[1][1], xanchor = 0, yanchor = 0)
+    show add2m at Position(xpos = add_position_m[2][0], ypos = add_position_m[2][1], xanchor = 0, yanchor = 0)
+    show add3m at Position(xpos = add_position_m[3][0], ypos = add_position_m[3][1], xanchor = 0, yanchor = 0)
+    show add5m at Position(xpos = add_position_m[5][0], ypos = add_position_m[5][1], xanchor = 0, yanchor = 0)
+    show add6m at Position(xpos = add_position_m[6][0], ypos = add_position_m[6][1], xanchor = 0, yanchor = 0)
+    show add7m at Position(xpos = add_position_m[7][0], ypos = add_position_m[7][1], xanchor = 0, yanchor = 0)
+    show add8m at Position(xpos = add_position_m[8][0], ypos = add_position_m[8][1], xanchor = 0, yanchor = 0)
+    
+    #отображаем часы, если они не использованы
+    if not add_ready[4]:
+        show add4m at Position(xpos = add_position_m[4][0], ypos = add_position_m[4][1], xanchor = 0, yanchor = 0)
+
+    # отображаем неактивную косметику (уже использована)
+    if add_ready[8]:
+        show add8_inactive_m at Position(xpos = main_add_position_m[8][0], ypos = main_add_position_m[8][1], xanchor = 0, yanchor = 0)
+
+
+    if first_game_mirror:
+        navigator "Так же как и в предыдущей части, вам необходимо поочереди перетаскивать элементы. А я буду помогать."
+        call screen MirrorScreenM
+        $ first_game_mirror = False
+    else:
+        call screen MirrorScreenM
+
+    python:
+        char_return = [char for char in _return]
+        num1 = len(char_return)
+        num2 = int(char_return[num1-1])
+
+        if num1 == 8: #haircut
+            if num2 == 1 or num2 == 3:
+                for a in range(1, 5):
+                    haircut_ready[a] = False
+                haircut_ready[num2] = True
+                update_mirror_image_m(1, num2)
+        if num1 == 4: #add
+            if num2 == 6 or num2 == 8: 
+                add_position_m[num2][0] = add_model_position_m[num2][0]
+                add_position_m[num2][1] = add_model_position_m[num2][1] 
+                add_ready[num2] = True
+                update_mirror_image_m(2, num2)
+            if num2 == 4: #часы, которые не видны в зеркале
+                add_ready[4] = True
+                renpy.hide("add4m")
+        
+        navigator(navigator_mirror_str_m[_return])
+        check = (haircut_ready[1] or haircut_ready[3]) and add_ready[4] and add_ready[6] and add_ready[8]
+
+    if check:
+        navigator "Поздравляю! Вы готовы к съёмкам. Вас ждут в студии!"
+        $arrow_at_cupboard = False
+        $todo_five_colmpleted = True
+        jump technical_label_5_5
+
+
+    jump mirror_game_m
+
+
+
+
+
+################## 6 #######################
+
+
+
 
 label sixth_mini_game_production:
-    ""
-    jump technical_label_2_1
+    navigator "Презентации созданы, образ подобран, можно начинать запись курса."
+    navigator "Свяжитесь с Екатериной, спросите, когда можно прийти на съемки?"
+    
+    jump technical_label_3_5
+
+
+### Пока не выберет 5 или 10 презентаций ###
+label technical_label_3_1:
+    if sex == "male":
+        menu:
+            male_player "У меня готово ..."
+            "1":
+                $amount_of_presentations = 1
+            "3":
+                $amount_of_presentations = 3
+            "5":
+                $amount_of_presentations = 5
+            "10":
+                $amount_of_presentations = 10
+
+        if amount_of_presentations == 1: 
+            male_player "У меня готова {fast}[amount_of_presentations] презентация. Хочу её записать"
+        elif amount_of_presentations == 3:
+            male_player "У меня готово {fast}[amount_of_presentations] презентации. Хочу их записать"
+        else:
+            male_player "У меня готово {fast}[amount_of_presentations] презентаций. Хочу их записать"
+        
+        if amount_of_presentations < 5: 
+            hide ekaterina
+            show ekaterina sad
+            ekaterina "Давайте еще подготовим несколько. Выходить на съемку нужно минимум с пятью готовыми  презентациями."
+            ekaterina "Так мы сможем сразу получить пять готовых видеороликов. Иначе, может остаться неипользованное время."
+            jump technical_label_3_1
+        else:
+            hide ekaterina
+            show ekaterina funny
+            ekaterina "Отлично,тогда нужно постараться все их записать. Сколько времени Вы можете выделить для одного съемочного дня?"
+            jump technical_label_3_2
+    else:
+        menu:
+            female_player "У меня готово ..."
+            "1":
+                $amount_of_presentations = 1
+            "3":
+                $amount_of_presentations = 3
+            "5":
+                $amount_of_presentations = 5
+            "10":
+                $amount_of_presentations = 10
+
+        if amount_of_presentations == 1: 
+            female_player "У меня готова {fast}[amount_of_presentations] презентация. Хочу её записать."
+        elif amount_of_presentations == 3:
+            female_player "У меня готово {fast}[amount_of_presentations] презентации. Хочу их записать."
+        else:
+            female_player "У меня готово {fast}[amount_of_presentations] презентаций. Хочу их записать."
+        
+        if amount_of_presentations < 5: 
+            hide ekaterina
+            show ekaterina sad
+            ekaterina "Давайте еще подготовим несколько. Выходить на съемку нужно минимум с пятью готовыми  презентациями."
+            ekaterina "Так мы сможем сразу получить пять готовых видеороликов. Иначе, может остаться неипользованное время."
+            jump technical_label_3_1
+        else:
+            hide ekaterina
+            show ekaterina funny
+            ekaterina "Отлично,тогда нужно постараться все их записать. Сколько времени Вы можете выделить для одного съемочного дня?"
+            jump technical_label_3_2
+
+### Пока не выберем достаточное количество свободного времени для съемок ###
+label technical_label_3_2:
+    if sex == "male":
+        menu:
+            male_player "У меня будет ..."
+            "1 час":
+                male_player "У меня будет {fast}1 час. Могу его занять видеосъемкой."
+                hide ekaterina
+                show ekaterina sad
+                ekaterina "Съемки одной партии видеолекций длятся в среднем 2-4 часа. Это оптимальное количество времени для записи всех видео."
+                hide ekaterina
+                show ekaterina normal_2
+                ekaterina "Если Вы не можете найти свободные 3 часа, то съемки следует отложить на другой раз."
+                ekaterina "Иначе больше времени уйдет на подготовку к съемкам, чем на саму запись видеолекций."
+                jump technical_label_3_2
+            "2 часа":
+                male_player "У меня будет {fast}2 часа. Могу их занять видеосъемкой"
+                if amount_of_presentations == 5:
+                    hide ekaterina
+                    show ekaterina funny
+                    ekaterina "Хорошо, этого времени Вам будет достаточно. Давайте выберем день и время. Когда Вам удобно?"
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Напомню, что прийти к нам нужно за 30 минут до назначенного времени."
+                    jump technical_label_3_3
+                else:
+                    hide ekaterina
+                    show ekaterina sad
+                    ekaterina "Съемки одной партии видеолекций длятся в среднем 2-4 часа. Это оптимальное количество времени для записи всех видео."
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Если Вы не можете найти свободные 3 часа, то съемки следует отложить на другой раз."
+                    ekaterina "Иначе больше времени уйдет на подготовку к съемкам, чем на саму запись видеолекций."
+                    jump technical_label_3_2
+            "3 часа":
+                male_player "У меня будет {fast}3 часа. Могу их занять видеосъемкой"
+                if amount_of_presentations == 5:
+                    hide ekaterina
+                    show ekaterina sad
+                    ekaterina "Для пяти видео этого времени много, предлагаем Вам запланировать 2 часа съемок."
+                    jump technical_label_3_2
+                else:
+                    hide ekaterina
+                    show ekaterina funny
+                    ekaterina "Хорошо, этого времени Вам будет достаточно. Давайте выберем день и время. Когда Вам удобно?"
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Напомню, что прийти к нам нужно за 30 минут до назначенного времени."
+                    jump technical_label_3_3
+            "4 часа":
+                male_player "У меня будет {fast}4 часа. Могу их занять видеосъемкой"
+                if amount_of_presentations == 5:
+                    hide ekaterina
+                    show ekaterina sad
+                    ekaterina "Для пяти видео этого времени много, предлагаем Вам запланировать 2 часа съемок."
+                    jump technical_label_3_2
+                else:
+                    hide ekaterina
+                    show ekaterina funny
+                    ekaterina "Хорошо, этого времени Вам будет достаточно. Давайте выберем день и время. Когда Вам удобно?"
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Напомню, что прийти к нам нужно за 30 минут до назначенного времени."
+                    jump technical_label_3_3
+    else:
+        menu:
+            male_player "У меня будет ..."
+            "1 час":
+                male_player "У меня будет {fast}1 час. Могу его занять видеосъемкой"
+                hide ekaterina
+                show ekaterina sad
+                ekaterina "Съемки одной партии видеолекций длятся в среднем 2-4 часа. Это оптимальное количество времени для записи всех видео."
+                hide ekaterina
+                show ekaterina normal_2
+                ekaterina "Если Вы не можете найти свободные 3 часа, то съемки следует отложить на другой раз."
+                ekaterina "Иначе больше времени уйдет на подготовку к съемкам, чем на саму запись видеолекций."
+                jump technical_label_3_2
+            "2 часа":
+                male_player "У меня будет {fast}2 часа. Могу их занять видеосъемкой"
+                if amount_of_presentations == 5:
+                    hide ekaterina
+                    show ekaterina funny
+                    ekaterina "Хорошо, этого времени Вам будет достаточно. Давайте выберем день и время. Когда Вам удобно?"
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Напомню, что прийти к нам нужно за 30 минут до назначенного времени."
+                    jump technical_label_3_3
+                else:
+                    hide ekaterina
+                    show ekaterina sad
+                    ekaterina "Съемки одной партии видеолекций длятся в среднем 2-4 часа. Это оптимальное количество времени для записи всех видео."
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Если Вы не можете найти свободные 3 часа, то съемки следует отложить на другой раз."
+                    ekaterina "Иначе больше времени уйдет на подготовку к съемкам, чем на саму запись видеолекций."
+                    jump technical_label_3_2
+            "3 часа":
+                male_player "У меня будет {fast}3 часа. Могу их занять видеосъемкой"
+                if amount_of_presentations == 5:
+                    hide ekaterina
+                    show ekaterina sad
+                    ekaterina "Для пяти видео этого времени много, предлагаем Вам запланировать 2 часа съемок."
+                    jump technical_label_3_2
+                else:
+                    hide ekaterina
+                    show ekaterina funny
+                    ekaterina "Хорошо, этого времени Вам будет достаточно. Давайте выберем день и время. Когда Вам удобно?"
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Напомню, что прийти к нам нужно за 30 минут до назначенного времени."
+                    jump technical_label_3_3
+            "4 часа":
+                male_player "У меня будет {fast}4 часа. Могу их занять видеосъемкой"
+                if amount_of_presentations == 5:
+                    hide ekaterina
+                    show ekaterina sad
+                    ekaterina "Для пяти видео этого времени много, предлагаем Вам запланировать 2 часа съемок."
+                    jump technical_label_3_2
+                else:
+                    hide ekaterina
+                    show ekaterina funny
+                    ekaterina "Хорошо, этого времени Вам будет достаточно. Давайте выберем день и время. Когда Вам удобно?"
+                    hide ekaterina
+                    show ekaterina normal_2
+                    ekaterina "Напомню, что прийти к нам нужно за 30 минут до назначенного времени."
+                    jump technical_label_3_3
+
+label technical_label_3_3:
+    if sex == "male":
+        menu:
+            male_player "Мне удобно в ..."
+
+            "понедельник с 13:00":
+                hide ekaterina
+                show ekaterina sad
+                ekaterina "В это время в студии профилактические работы. Посмотрите, пожалуйста, другой день."
+                jump technical_label_3_3
+            "четверг с 10:00":
+                hide ekaterina
+                show ekaterina normal_2
+                ekaterina "Хорошо. Я внесу Вас в график съемок. До свидания."
+            "пятницу с 14:00":
+                hide ekaterina
+                show ekaterina normal_2
+                ekaterina "Хорошо. Я внесу Вас в график съемок. До свидания."
+    else:
+        menu:
+            female_player "Мне удобно в ..."
+
+            "понедельник с 13:00":
+                hide ekaterina
+                show ekaterina sad
+                ekaterina "В это время в студии профилактические работы. Посмотрите, пожалуйста, другой день."
+                jump technical_label_3_3
+            "четверг с 10:00":
+                hide ekaterina
+                show ekaterina normal_2
+                ekaterina "Хорошо. Я внесу Вас в график съемок. До свидания!"
+            "пятницу с 14:00":
+                hide ekaterina
+                show ekaterina normal_2
+                ekaterina "Хорошо. Я внесу Вас в график съемок. До свидания!"
+    
+    hide ekaterina
+
+    call screen nots
+
+    if _return == "exit":
+        if pet == "cat":
+            scene home_with_cat with LongFade
+        elif pet == "dog":
+            scene home_with_dog with LongFade
+
+        navigator "Ура! Сегодня у нас съемки. Пора собираться и идти в студию!"
+        navigator "Для начала вам стоит пойти в Центр, там вас встретит Екатерина и все объяснит."
+        jump technical_label_3_4
+
+
+label technical_label_3_4:
+    call screen room
+
+    if _return == "exit":
+        menu:
+            "Пойти в Центр":
+                scene nots with fade
+                
+                show ekaterina funny with dissolve
+
+                ekaterina "Здравствуйте, [name]! Отлично выглядите! Вы пришли как раз вовремя."
+                ekaterina "Я буду сопровождать Вас в студии. Не волнуйтесь. У вас все получится! Нас уже ждут...."
+                scene studia_game_idle with fade
+                navigator "Упс.. Что-то пошло не так. Помогите привести студию в порядок."
+                jump video_studia_game
+
+            "Пойти на кафедру":
+                navigator "Вас ждут в Центре."
+            "Остаться дома":
+                navigator "Вас уже ждут в Центре."
+        jump technical_label_3_4
+    else:
+        jump technical_label_3_4
+    
+label technical_label_3_5:
+    call screen room
+
+    $flag_room_computer_opened = False
+
+    if _return == "exit":
+        menu:
+            "Пойти в Центр":
+                scene nots with fade
+
+                show ekaterina normal_2 with dissolve
+
+                if sex == "male":
+                    male_player "Здравствуйте, Екатерина! Материалы для съемок подготовлены. Когда я могу начать запись видеолекций?"
+                else:
+                    female_player "Здравствуйте, Екатерина! Материалы для съемок подготовлены. Когда я могу начать запись видеолекций?"
+
+                ekaterina "Здравствуйте, [name]! Сколько презентаций у Вас готово? Сколько видеолекций вы уже хотите записать?"
+
+                jump technical_label_3_1
+
+            "Пойти на кафедру":
+                navigator "Вас ждут в центре."
+            "Остаться дома":
+                navigator "Лучше не задерживаться. Вас ждут в центре."
+        jump technical_label_3_5
+    else:
+        navigator "Лучше не задерживаться. Вас ждут в центре."
+        jump technical_label_3_5
+
+
+label video_studia_game:
+    
+    scene studia_game_idle
+
+    show buttonf at Position(xpos = 1186, ypos = 26, xanchor = 0, yanchor = 0)
+
+    call screen studia_game
+
+    if _return == "window_finded":
+        navigator "Правильно. Окно должно быть закрыто. Шторы опущены."
+        jump video_studia_game
+    elif _return == "sofits_finded":
+        navigator "Точно! Софиты включаются до начала записи видеолекций."
+        jump video_studia_game
+    elif _return == "operator_finded":
+        navigator "Да, это ошибка. Оператор не должен отвлекаться во время съемки."
+        jump video_studia_game
+    elif _return == "text_finded":
+        navigator "Да. Нужно сокращать текст в  слайдах при подготовке презентации."
+        jump video_studia_game
+    elif _return == "author_head_finded":
+        navigator "Это важно! Во время записи нужно смотреть в камеру."
+        jump video_studia_game
+    elif _return == "author_hand_finded":
+        if sex == "male":
+            navigator "Вы внимательный! Руками размахивать нельзя. Кажется автор допустил еще одну ошибку."
+        else:
+            navigator "Вы внимательная! Руками размахивать нельзя. Кажется автор допустил еще одну ошибку."
+        jump video_studia_game
+    elif _return == "author_garment_finded":
+        navigator "Верно! Белый, черный и красный цвета не подходят для съемки."
+        jump video_studia_game
+    elif _return == "door_open_finded":
+        navigator "Конечно! На съемках не должно быть посторонних."
+        jump video_studia_game
+    elif _return == "send":
+        if window_finded and sofits_finded and operator_finded and text_finded and door_open_finded and author_hand_finded and author_head_finded and author_garment_finded:
+            navigator "Вы справились! Давайте приведем нашу студию в порядок."
+
+            scene studia_game_right with fade
+
+            navigator "Ну вот, теперь всё так, как и должно быть на съемках видеолекций."
+            $todo_six_colmpleted = True
+            $final_flag_1 = False
+            jump final
+            #окончание мини-игры
+        else:
+            if not window_finded:
+                navigator "Поищите еще. Вам не мешают шум и свет?"
+                jump video_studia_game
+            elif not door_open_finded:
+                navigator "А дверь не забыли закрыть?"
+                jump video_studia_game
+            elif not sofits_finded:
+                navigator "Вам не кажется, что мало света в студии?"
+                jump video_studia_game
+            elif not operator_finded:
+                navigator "Смотрите, кто-то отвлекся от съемок!"
+                jump video_studia_game
+            elif not author_head_finded:
+                navigator "Куда смотрит автор?"
+                jump video_studia_game
+            elif not author_garment_finded:
+                navigator "Внешний вид автора соответствует рекомендациям?"
+                jump video_studia_game
+            elif not author_hand_finded:
+                navigator "Какой широкий жест у автора в кадре! Это разве правильно?"
+                jump video_studia_game
+            elif not text_finded:
+                navigator "Обратите внимание на суфлер."
+                jump video_studia_game 
+
+
+label final:
+    if final_flag_1 == False:
+        scene nots with fade
+    else:
+        scene nots
+        
+    if final_flag_1 == False:
+        show ekaterina funny
+        ekaterina "Ура! Вы справились со всеми заданиями. Пора на кафедру."
+        hide ekaterina funny
+
+    $final_flag_1 = True
+    call screen nots
+
+    if _return == "exit":
+        
+        menu:
+            "Пойти домой":
+                navigator "Вас ждут на кафедре."
+                jump final
+            "Пойти на кафедру":
+                jump final_in_the_kafedra
+            "Остаться в центре":
+                navigator "Лучше поторопиться. Вас уже ждут на кафедре."
+                jump final
+
+label final_in_the_kafedra:
+    scene final_1 with fade
+    if sex == "male":
+        headOfDepartment "Поздравляю, коллега! Вы прошли путь создателя онлайн-курса до конца!"
+        docent "Уверены, что Вам было не просто, но оно того стоило."
+        male_player "Спасибо! Это был замечательный опыт."
+        professor "И какой же основной принцип создания хорошего курса?"
+        male_player "Надо ориентироваться на студента!"
+        headOfDepartment "Верная мысль. Какие планы дальше?"
+        male_player "Я уже продумываю структуру будущего онлайн-курса и собираю команду."
+        docent "Как интересно! Я с Вами! И, кстати, Ваш сертификат уже готов."
+        headOfDepartment "Желаем Вам удачи! Применяйте полученные знания на практике."
+        navigator "Чтобы сохранить Ваш сертификат, Вы можете сделать скриншот или сфотографировать его на свой телефон."
+    else:
+        headOfDepartment "Поздравляю, коллега! Вы прошли путь создателя онлайн-курса до конца!"
+        docent "Уверены, что Вам было не просто, но оно того стоило."
+        female_player "Спасибо! Это был замечательный опыт."
+        professor "И какой же основной принцип создания хорошего курса?"
+        female_player "Надо ориентироваться на студента!"
+        headOfDepartment "Верная мысль. Какие планы дальше? "
+        female_player "Я уже продумываю структуру будущего онлайн-курса и собираю команду."
+        docent "Как интересно! Я с Вами! И, кстати, Ваш сертификат уже готов."
+        headOfDepartment "Желаем Вам удачи! Применяйте полученные знания на практике."
+
+        navigator "Чтобы сохранить Ваш сертификат, Вы можете сделать скриншот или сфотографировать его на свой телефон."
+         
+    call screen final_finalov
+    if(_return == "Sertifikat"):
+        call screen input_FIO with dissolve
+
+        python:
+            checked_name = _return
+            FIO = checked_name
+
+        scene black with dissolve
+        show ser at center
+        show text "[FIO]" at Position(xpos = 593, ypos = 490, xanchor = 0, yanchor = 0)
+
+        pause 
+
+        navigator "Ваш питомец соскучился, пора домой."
+
+        if pet == "dog":
+            scene dog_zoom with fade
+        else:
+            scene cat_zoom with fade
+
+        if sex == "male":
+            male_player "Привет, [pet_name]! Порадуйся за меня! Теперь я знаю, как сделать классный онлайн-курс."
+        else:
+            female_player "Привет, [pet_name]! Порадуйся за меня! Теперь я знаю, как сделать классный онлайн-курс."
+
+        jump game_over
+        
+label game_over:
+    if pet == "dog":
+        scene dog_zoom
+    else:
+        scene cat_zoom
+
+    call screen final2 with dissolve
+
+    if _return == "Sertifikat":
+        scene black with dissolve
+        show ser at center
+        show text "[FIO]" at Position(xpos = 593, ypos = 490, xanchor = 0, yanchor = 0)
+        pause
+        jump game_over
